@@ -1,0 +1,18 @@
+TCMPortMapper classes for REALbasic
+------------------------------------
+
+Project home page:
+
+	http://code.google.com/p/rb-tcmportmapper/
+
+To run the demo or use it in your own projects, you need to
+download the TCMPortMapper Framework from:
+
+	http://code.google.com/p/tcmportmapper/downloads/list
+
+Place the TCMPortMapper.framework folder next to this project
+so that it can be found and loaded.
+
+
+Enjoy!
+  Thomas Tempelmann, 25 Jan 2009
