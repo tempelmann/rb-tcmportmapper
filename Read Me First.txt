@@ -6,7 +6,7 @@ Project home page:
 	http://code.google.com/p/rb-tcmportmapper/
 
 To run the demo or use it in your own projects, you need to
-download the TCMPortMapper Framework from:
+download the TCMPortMapper framework (v1.2 or later) from:
 
 	http://code.google.com/p/tcmportmapper/downloads/list
 
