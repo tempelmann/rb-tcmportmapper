@@ -15,7 +15,7 @@ Protected Class TCMPortMapper
 		    
 		    // A built app should include it inside its Contents/Frameworks folder
 		    try
-		      f = App.ExecutableFile.Parent.Child("Frameworks").Child(TCMPortMapperLib)
+		      f = App.ExecutableFile.Parent.Parent.Child("Frameworks").Child(TCMPortMapperLib)
 		    catch NilObjectException
 		      f = nil
 		    end
@@ -45,7 +45,6 @@ Protected Class TCMPortMapper
 		    
 		    dim tcm as CFBundle = CFBundle.NewCFBundleFromURL (CFURL(f))
 		    if tcm = nil or tcm.IsNULL or not tcm.Load() then
-		      break
 		      if f = nil then
 		        MsgBox "Oops - could not find "+TCMPortMapperLib
 		      else
@@ -293,7 +292,6 @@ Protected Class TCMPortMapper
 		If you need more control, I recommend to get the more complete TCMPortMapper
 		MBS plugin from http://www.monkeybreadsoftware.de - that plugin implements
 		all features of the TCMPortMapper lib.
-		
 	#tag EndNote
 
 	#tag Note, Name = How To Use
@@ -323,7 +321,6 @@ Protected Class TCMPortMapper
 		you're using a UPnP-capable router, but not with NAT-PMP. I hope your router,
 		if it only supports NAT-PMP, offers its own way to view the mappings via its
 		own configuration tool.
-		
 	#tag EndNote
 
 	#tag Note, Name = What is TCMPortMapper
@@ -340,7 +337,6 @@ Protected Class TCMPortMapper
 		uses this lib as well. If you have trouble using this RB code, try out Port Map
 		to see if it can't succeed either - in that case your might not support UPnP
 		or NAT-PMP, or the function is disabled.
-		
 	#tag EndNote
 
 
