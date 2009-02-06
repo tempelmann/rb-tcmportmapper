@@ -77,6 +77,33 @@ Protected Module Cocoa
 		
 	#tag EndNote
 
+	#tag Note, Name = Caution using 'SEL' and 'id' in declares
+		This is only important if you add new Cocoa method calls yourself:
+		
+		If you want to call an external function (usually via "declare"), and if that function's
+		return type is a selector (SEL) or generic Cocoa object (id), be cautious not to use
+		such types as the return type of the declared function. Instead, have it return a UInt32
+		and then assign its value to a variable of type SEL or id using the ToSEL() or To_id()
+		function (or assign directly to its ".value" member, although that's a bit unclean).
+		
+		If you do not obey this rule, your application may not work on PowerPC processors
+		because of a bug in REALbasic (as of v2008r5.1): Returning structure types from
+		declare'd functions does not work.
+		
+		An example where you'd want to store the result of a call in a variable such as:
+		
+		  dim result as id
+		
+		Bad:
+		  declare function objc_msgSend lib CocoaLib (r as id, s as SEL) as id
+		  result = objc_msgSend (r, s)
+		
+		Good:
+		  declare function objc_msgSend lib CocoaLib (r as id, s as SEL) as UInt32
+		  result = To_id (objc_msgSend (r, s))
+		
+	#tag EndNote
+
 
 	#tag Property, Flags = &h21
 		Private autoreleasePool As AutoreleaseTimer
@@ -93,12 +120,12 @@ Protected Module Cocoa
 	#tag EndConstant
 
 
-	#tag Structure, Name = SEL, Flags = &h1
-		value as Integer
+	#tag Structure, Name = id, Flags = &h1
+		value as UInt32
 	#tag EndStructure
 
-	#tag Structure, Name = id, Flags = &h1
-		value as Integer
+	#tag Structure, Name = SEL, Flags = &h1
+		value as UInt32
 	#tag EndStructure
 
 

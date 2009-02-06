@@ -2,10 +2,11 @@
 Protected Class TCMPortMapping
 	#tag Method, Flags = &h0
 		 Shared Function WithLocalPort(localPort as Integer, desiredExternalPort as Integer, transportProtocol as Integer, userInfo as Integer) As TCMPortMapping
-		  Declare Function objc_msgSend Lib CocoaLib (theReceiver as Cocoa.id, theSelector as Cocoa.SEL, privatePort as Integer, desiredExternalPort as Integer, transportProtocol as Integer, userInfo as Integer) as Cocoa.id
+		  Declare Function objc_msgSend Lib CocoaLib (theReceiver as Cocoa.id, theSelector as Cocoa.SEL, privatePort as Integer, desiredExternalPort as Integer, transportProtocol as Integer, userInfo as Integer) as UInt32 // do not return cocoa.id here because that doesn't work on PowerPC due to bug in RB (as of 2008r5.1)
 		  
 		  dim mappingClass as Cocoa.id = Cocoa.ClassRef("TCMPortMapping")
-		  dim ref as Cocoa.id = objc_msgSend (mappingClass, Cocoa.Selector("portMappingWithLocalPort:desiredExternalPort:transportProtocol:userInfo:"), localPort, desiredExternalPort, transportProtocol, userInfo)
+		  dim ref as Cocoa.id
+		  ref.value = objc_msgSend (mappingClass, Cocoa.Selector("portMappingWithLocalPort:desiredExternalPort:transportProtocol:userInfo:"), localPort, desiredExternalPort, transportProtocol, userInfo)
 		  
 		  if ref.value <> 0 then
 		    return new TCMPortMapping (ref)
