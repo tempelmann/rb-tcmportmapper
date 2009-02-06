@@ -243,21 +243,25 @@ Inherits CFType
 	#tag Method, Flags = &h0
 		Function Load() As Boolean
 		  #if TargetMacOS
-		    declare function CFBundleLoadExecutableAndReturnError lib CarbonLib (theBundle as Ptr, ByRef errorOut as Ptr) as Boolean
 		    
 		    if not me.IsNULL then
-		      dim error as Ptr
 		      dim ok as Boolean
-		      ok = CFBundleLoadExecutableAndReturnError (me.Reference, error)
-		      if error <> nil then
-		        CFType.Release (error)
-		      end if
+		      #if false
+		        // this only works in Mac OS X 10.5 and later:
+		        declare function CFBundleLoadExecutableAndReturnError lib CarbonLib (theBundle as Ptr, ByRef errorOut as Ptr) as Boolean
+		        dim error as Ptr
+		        ok = CFBundleLoadExecutableAndReturnError (me.Reference, error)
+		        if error <> nil then
+		          CFType.Release (error)
+		        end if
+		      #else
+		        // this works in all OS X versions:
+		        declare function CFBundleLoadExecutable lib CarbonLib (theBundle as Ptr) as Boolean
+		        ok = CFBundleLoadExecutable (me.Reference)
+		      #endif
 		      return ok
 		    end if
 		  #endif
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 

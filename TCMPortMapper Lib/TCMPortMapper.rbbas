@@ -2,7 +2,7 @@
 Protected Class TCMPortMapper
 	#tag Method, Flags = &h0
 		 Shared Function SharedInstance() As TCMPortMapper
-		  Declare Function objc_msgSend Lib CocoaLib Alias "objc_msgSend" (theReceiver as Cocoa.id, theSelector as Cocoa.SEL) as Cocoa.id
+		  Declare Function objc_msgSend Lib CocoaLib Alias "objc_msgSend" (theReceiver as Cocoa.id, theSelector as Cocoa.SEL) as UInt32 // do not return cocoa.id here because that doesn't work on PowerPC due to bug in RB (as of 2008r5.1)
 		  
 		  static gMapper as TCMPortMapper
 		  static gDidSearch as Boolean
@@ -64,7 +64,8 @@ Protected Class TCMPortMapper
 		      end
 		    end
 		    
-		    dim ref as Cocoa.id = objc_msgSend (Cocoa.ClassRef("TCMPortMapper"), Cocoa.Selector("sharedInstance"))
+		    dim ref as Cocoa.id
+		    ref.value = objc_msgSend (Cocoa.ClassRef("TCMPortMapper"), Cocoa.Selector("sharedInstance"))
 		    if ref.value <> 0 then
 		      gMapper = new TCMPortMapper (ref)
 		    else
@@ -104,12 +105,12 @@ Protected Class TCMPortMapper
 		Sub Update()
 		  // The port mapper lib's "start" method
 		  
-		  Declare Function objc_msgSend Lib CocoaLib Alias "objc_msgSend" (theReceiver as Cocoa.id, theSelector as Cocoa.SEL) as Cocoa.id
+		  Declare Function objc_msgSend Lib CocoaLib Alias "objc_msgSend" (theReceiver as Cocoa.id, theSelector as Cocoa.SEL) as UInt32 // do not return cocoa.id here because that doesn't work on PowerPC due to bug in RB (as of 2008r5.1)
 		  
 		  mLastExtAddr = ""
 		  
-		  dim id as Cocoa.id = objc_msgSend (me.objRef, Cocoa.Selector("start"))
-		  
+		  dim id as Cocoa.id
+		  id.value = objc_msgSend (me.objRef, Cocoa.Selector("start"))
 		End Sub
 	#tag EndMethod
 

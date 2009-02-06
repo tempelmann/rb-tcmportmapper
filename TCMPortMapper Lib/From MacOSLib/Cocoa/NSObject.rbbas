@@ -3,13 +3,13 @@ Protected Class NSObject
 	#tag Method, Flags = &h1
 		Protected Sub Constructor(classRef as id)
 		  #if TargetMachO
-		    Declare Function objc_msgSend Lib CocoaLib (theReceiver as id, theSelector as SEL) as id
+		    Declare Function objc_msgSend Lib CocoaLib (theReceiver as id, theSelector as SEL) as UInt32 // do not return cocoa.id here because that doesn't work on PowerPC due to bug in RB (as of 2008r5.1)
 		    
-		    me.objRef = objc_msgSend (classRef, Cocoa.Selector("alloc"))
+		    me.objRef.value = objc_msgSend (classRef, Cocoa.Selector("alloc"))
 		    if me.objRef.value = 0 then //allocation failed
 		      raise new RuntimeException
 		    end
-		    me.objRef = objc_msgSend (me.objRef, Cocoa.Selector("init"))
+		    me.objRef.value = objc_msgSend (me.objRef, Cocoa.Selector("init"))
 		    if me.objRef.value = 0 then //initialization failed
 		      raise new RuntimeException
 		    end
@@ -24,7 +24,7 @@ Protected Class NSObject
 		    
 		    if me.objRef.value <> 0 then
 		      objc_msgSend me.objRef, Cocoa.Selector("release")
-		      me.objRef.value = 0
+		      me.objRef = To_id(0)
 		    end
 		  #endif
 		End Sub
@@ -45,7 +45,6 @@ Protected Class NSObject
 
 	#tag Note, Name = About
 		Derived from: http://www.declaresub.com/ideclare/Cocoa/index.html
-		
 	#tag EndNote
 
 
